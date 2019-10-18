@@ -1,5 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
+
 const usersRouter = require('./routes/users.js');
 const cardsRouter = require('./routes/cards.js');
 const { createUser, login } = require('./controllers/users');
@@ -20,12 +22,13 @@ app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
 });
 
+app.use(cookieParser());
 app.use(express.json());
 
 app.post('/signin', login);
 app.post('/signup', createUser);
 
-app.use(auth)
+app.use(auth);
 
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
