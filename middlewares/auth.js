@@ -9,9 +9,9 @@ app.use(cookieParser());
 const { JWT_SECRET } = process.env;
 
 module.exports = (req, res, next) => {
-    const { jwt } = req.cookie.jwt;
+    const { token } = req.cookie.jwt;
 
-    if (!jwt) {
+    if (!token) {
         return res
             .status(401)
             .send({ message: 'Необходима авторизация' });
@@ -20,7 +20,7 @@ module.exports = (req, res, next) => {
     let payload;
 
     try {
-        payload = jwt.verify(jwt, JWT_SECRET);
+        payload = jwt.verify(token, JWT_SECRET);
     } catch (err) {
         return res
             .status(401)
