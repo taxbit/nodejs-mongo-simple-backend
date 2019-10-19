@@ -3,7 +3,7 @@ const Card = require('../models/card');
 module.exports.getCards = (req, res) => {
   Card.find({})
     .then((cards) => res.send({ data: cards }))
-    .catch((err) => res.status(500).send({ message: 'Произошла ошибка чтения cards' }));
+    .catch((err) => res.status(500).send({ message: `Произошла ошибка чтения cards: ${err}` }));
 };
 
 
@@ -17,7 +17,12 @@ module.exports.createCard = (req, res) => {
 
 
 module.exports.deleteCard = (req, res) => {
-  Card.findByIdAndRemove(req.params.cardId)
-    .then((card) => res.send({ data: card }))
-    .catch((err) => res.status(500).send({ message: `Произошла ошибка удаления card: ${err}` }));
+  Card.findOneAndDelete({ _id: req.params.cardId, owner: req.user._id })
+    .then((card) => {
+      if (!card) {
+        return Promise.reject(new Error('Ошибка удаления карты'));
+      }
+      res.send({ data: card });
+    })
+    .catch((err) => res.status(500).send({ message: err.message }));
 };
