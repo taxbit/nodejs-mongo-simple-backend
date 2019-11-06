@@ -42,7 +42,7 @@ app.post('/signup', celebrate({
     name: Joi.string().required().min(2).max(30),
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
-    about: Joi.string().required().min(8),
+    about: Joi.string().required().min(2).max(30),
     avatar: Joi.string(),
   }),
 }), createUser);
@@ -56,12 +56,11 @@ app.use(errorLogger);
 app.use(errors());
 
 app.use((err, req, res, next) => {
-    const { statusCode = 500, message } = err;
-    res.status(statusCode)
-        .send({
-            message: statusCode === 500
-                ? 'На сервере произошла ошибка'
-                : message
-        });
+  const { statusCode = 500, message } = err;
+  res.status(statusCode)
+    .send({
+      message: statusCode === 500
+        ? 'На сервере произошла ошибка'
+        : message,
+    });
 });
-

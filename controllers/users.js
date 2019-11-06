@@ -7,7 +7,7 @@ const NotFoundError = require('../errors/not-found-err');
 const AuthError = require('../errors/auth-err');
 
 
-module.exports.getUsers = (req, res) => {
+module.exports.getUsers = (req, res, next) => {
   User.find({})
     .then((users) => {
       if (!users) {
@@ -19,7 +19,7 @@ module.exports.getUsers = (req, res) => {
 };
 
 
-module.exports.getUserById = (req, res) => {
+module.exports.getUserById = (req, res, next) => {
   console.log(req.params.userId);
   User.findById(req.params.userId)
     .then((user) => {
@@ -32,7 +32,7 @@ module.exports.getUserById = (req, res) => {
 };
 
 
-module.exports.createUser = (req, res) => {
+module.exports.createUser = (req, res, next) => {
   const { name, email, password, about, avatar } = req.body;
   bcrypt.hash(password, 10)
     .then((hash) => User.create({ name, email, password: hash, about, avatar }))
@@ -46,7 +46,7 @@ module.exports.createUser = (req, res) => {
 };
 
 
-module.exports.login = (req, res) => {
+module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
   let UserId;
 
@@ -72,7 +72,6 @@ module.exports.login = (req, res) => {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
       }).end();
-
     })
     .catch(next);
 };
