@@ -65,8 +65,8 @@ module.exports.login = (req, res, next) => {
       }
 
       // аутентификация успешна
-      const { JWT_SECRET } = process.env;
-      const token = jwt.sign({ _id: UserId }, JWT_SECRET, { expiresIn: '7d' });
+      const { NODE_ENV, JWT_SECRET } = process.env;
+      const token = jwt.sign({ _id: UserId }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
 
       res.cookie('token', token, {
         maxAge: 3600000 * 24 * 7,
