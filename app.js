@@ -25,9 +25,7 @@ app.listen(PORT, () => {
 });
 
 app.get('/crash-test', () => {
-  setTimeout(() => {
-      throw new Error('Сервер сейчас упадёт');
-  }, 0);
+  res.send({ data: {test:'test'} })
 });
 
 app.use(cookieParser());
