@@ -24,9 +24,6 @@ app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
 });
 
-app.get('/crash-test', () => {
-  res.send({ data: {test:'test'} })
-});
 
 app.use(cookieParser());
 app.use(express.json());
@@ -34,6 +31,11 @@ app.use(express.json());
 app.use(requestLogger);
 
 
+app.get('/crash-test', () => {
+  setTimeout(() => {
+      throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
