@@ -13,7 +13,7 @@ module.exports.getUsers = (req, res, next) => {
       if (!users) {
         throw new NotFoundError('Произошла ошибка чтения users');
       }
-      res.send({ data: users })
+      res.send({ data: users });
     })
     .catch(next);
 };
@@ -26,21 +26,25 @@ module.exports.getUserById = (req, res, next) => {
       if (!user) {
         throw new NotFoundError('Не найден user с таким id');
       }
-      res.send({ data: user })
+      res.send({ data: user });
     })
     .catch(next);
 };
 
 
 module.exports.createUser = (req, res, next) => {
-  const { name, email, password, about, avatar } = req.body;
+  const {
+    name, email, password, about, avatar,
+  } = req.body;
   bcrypt.hash(password, 10)
-    .then((hash) => User.create({ name, email, password: hash, about, avatar }))
+    .then((hash) => User.create({
+      name, email, password: hash, about, avatar,
+    }))
     .then((user) => {
       if (!user) {
         throw new Error('Произошла ошибка создания user');
       }
-      res.send({ data: user })
+      res.send({ data: user });
     })
     .catch(next);
 };
