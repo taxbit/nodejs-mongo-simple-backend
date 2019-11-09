@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true,
+    unique: 'A user with the same email already exists ({VALUE})',
     validate: {
       validator: function(v) {
         return /([^0-9])([a-zA-Z0-9._\-]+)@([a-zA-Z0-9.\-]{2,})\.[a-zA-Z]{2,}/.test(v);
@@ -44,5 +44,7 @@ const userSchema = new mongoose.Schema({
     },
   },
 });
+
+userSchema.plugin(require('mongoose-beautiful-unique-validation'));
 
 module.exports = mongoose.model('user', userSchema);
