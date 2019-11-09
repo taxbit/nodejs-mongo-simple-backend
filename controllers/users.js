@@ -5,6 +5,7 @@ require('dotenv').config();
 const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-err');
 const AuthError = require('../errors/auth-err');
+const UserError = require('../errors/user-err');
 
 
 module.exports.getUsers = (req, res, next) => {
@@ -40,7 +41,7 @@ module.exports.createUser = (req, res, next) => {
     .then((hash) => User.create({
       name, email, password: hash, about, avatar,
     }).catch((err) => {
-      throw new Error(err);
+      throw new UserError(err.errors.email.message);
     }))
     .then((user) => {
       if (!user) {
