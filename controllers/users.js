@@ -39,6 +39,8 @@ module.exports.createUser = (req, res, next) => {
   bcrypt.hash(password, 10)
     .then((hash) => User.create({
       name, email, password: hash, about, avatar,
+    }).catch((err) => {
+      throw new Error(err);
     }))
     .then((user) => {
       if (!user) {
